@@ -477,6 +477,7 @@ impl OpenAIGenerator {
             None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
+            None,
             true,
             None,
             None,

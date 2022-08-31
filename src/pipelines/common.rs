@@ -383,17 +383,28 @@ impl TokenizerOption {
         tokenizer_class: Option<TokenizerClass>,
         vocab_path: &str,
         merges_path: Option<&str>,
+        secial_tokens_map_path: Option<&str>,
         lower_case: bool,
         strip_accents: impl Into<Option<bool>>,
         add_prefix_space: impl Into<Option<bool>>,
     ) -> Result<Self, RustBertError> {
         let strip_accents = strip_accents.into();
         let add_prefix_space = add_prefix_space.into();
+        let secial_tokens_map_path = if secial_tokens_map_path
+            .map(std::path::Path::new)
+            .map(|path| path.exists())
+            .unwrap_or(false)
+        {
+            secial_tokens_map_path
+        } else {
+            None
+        };
 
         match tokenizer_class {
             Some(TokenizerClass::DebertaV2Tokenizer) => {
                 return Ok(TokenizerOption::DebertaV2(DeBERTaV2Tokenizer::from_file(
                     vocab_path,
+                    secial_tokens_map_path,
                     lower_case,
                     strip_accents.unwrap_or(false),
                     add_prefix_space.unwrap_or(false),
@@ -441,6 +452,7 @@ impl TokenizerOption {
             }
             ModelType::DebertaV2 => TokenizerOption::DebertaV2(DeBERTaV2Tokenizer::from_file(
                 vocab_path,
+                secial_tokens_map_path,
                 lower_case,
                 strip_accents.unwrap_or(false),
                 add_prefix_space.unwrap_or(false),

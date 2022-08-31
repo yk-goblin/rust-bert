@@ -184,6 +184,7 @@ impl SentenceEmbeddingsModel {
             tokenizer_config_resource,
             tokenizer_vocab_resource,
             tokenizer_merges_resource,
+            tokenizer_secial_tokens_map_resource,
             transformer_type,
             transformer_config_resource,
             transformer_weights_resource,
@@ -213,6 +214,12 @@ impl SentenceEmbeddingsModel {
                 .to_string_lossy()
                 .as_ref(),
             tokenizer_merges_resource
+                .as_ref()
+                .map(|resource| resource.get_local_path())
+                .transpose()?
+                .map(|path| path.to_string_lossy().into_owned())
+                .as_deref(),
+            tokenizer_secial_tokens_map_resource
                 .as_ref()
                 .map(|resource| resource.get_local_path())
                 .transpose()?

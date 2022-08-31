@@ -844,6 +844,7 @@ impl MarianGenerator {
             None,
             vocab_path.to_str().unwrap(),
             Some(sentence_piece_path.to_str().unwrap()),
+            None,
             false,
             None,
             None,

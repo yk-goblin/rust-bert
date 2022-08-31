@@ -1073,6 +1073,7 @@ impl BartGenerator {
             ModelType::Bart,
             None,
             vocab_path.to_str().unwrap(),
+            None,
             Some(merges_path.to_str().unwrap()),
             false,
             None,

@@ -947,6 +947,7 @@ impl ProphetNetConditionalGenerator {
             None,
             vocab_path.to_str().unwrap(),
             None,
+            None,
             true,
             true,
             None,

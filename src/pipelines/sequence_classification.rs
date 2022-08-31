@@ -581,6 +581,7 @@ impl SequenceClassificationModel {
             None,
             vocab_path.to_str().unwrap(),
             merges_path.as_deref().map(|path| path.to_str().unwrap()),
+            None,
             config.lower_case,
             config.strip_accents,
             config.add_prefix_space,

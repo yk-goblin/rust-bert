@@ -1073,6 +1073,7 @@ impl ReformerGenerator {
             None,
             vocab_path.to_str().unwrap(),
             None,
+            None,
             false,
             None,
             None,

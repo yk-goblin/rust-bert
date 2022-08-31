@@ -82,24 +82,30 @@ impl SentenceEmbeddingsBuilder<Local> {
 
         let tokenizer_config = model_dir.join("tokenizer_config.json");
         let sentence_bert_config = model_dir.join("sentence_bert_config.json");
-        let (tokenizer_vocab, tokenizer_merges) = match (tokenizer_class, transformer_type) {
-            (Some(TokenizerClass::DebertaV2Tokenizer), _) => (model_dir.join("spm.model"), None),
-            (None, ModelType::Bert) | (None, ModelType::DistilBert) => {
-                (model_dir.join("vocab.txt"), None)
-            }
-            (None, ModelType::Roberta) => (
-                model_dir.join("vocab.json"),
-                Some(model_dir.join("merges.txt")),
-            ),
-            (None, ModelType::Albert) => (model_dir.join("spiece.model"), None),
-            (None, ModelType::T5) => (model_dir.join("spiece.model"), None),
-            _ => {
-                return Err(RustBertError::InvalidConfigurationError(format!(
-                    "Unsupported transformer model {:?} for Sentence Embeddings",
-                    transformer_type
-                )));
-            }
-        };
+        let (tokenizer_vocab, tokenizer_merges, tokenizer_special_token_map) =
+            match (tokenizer_class, transformer_type) {
+                (Some(TokenizerClass::DebertaV2Tokenizer), _) => (
+                    model_dir.join("spm.model"),
+                    None,
+                    Some(model_dir.join("special_tokens_map.json")),
+                ),
+                (None, ModelType::Bert) | (None, ModelType::DistilBert) => {
+                    (model_dir.join("vocab.txt"), None, None)
+                }
+                (None, ModelType::Roberta) => (
+                    model_dir.join("vocab.json"),
+                    Some(model_dir.join("merges.txt")),
+                    None,
+                ),
+                (None, ModelType::Albert) => (model_dir.join("spiece.model"), None, None),
+                (None, ModelType::T5) => (model_dir.join("spiece.model"), None, None),
+                _ => {
+                    return Err(RustBertError::InvalidConfigurationError(format!(
+                        "Unsupported transformer model {:?} for Sentence Embeddings",
+                        transformer_type
+                    )));
+                }
+            };
 
         let config = SentenceEmbeddingsConfig {
             modules_config_resource: modules_config.into(),
@@ -114,6 +120,7 @@ impl SentenceEmbeddingsBuilder<Local> {
             tokenizer_config_resource: tokenizer_config.into(),
             tokenizer_vocab_resource: tokenizer_vocab.into(),
             tokenizer_merges_resource: tokenizer_merges.map(|r| r.into()),
+            tokenizer_secial_tokens_map_resource: tokenizer_special_token_map.map(|r| r.into()),
             device: self.device,
         };
 

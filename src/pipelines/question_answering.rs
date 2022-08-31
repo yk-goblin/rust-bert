@@ -596,6 +596,7 @@ impl QuestionAnsweringModel {
             question_answering_config.model_type,
             None,
             vocab_path.to_str().unwrap(),
+            None,
             merges_path.as_deref().map(|path| path.to_str().unwrap()),
             question_answering_config.lower_case,
             question_answering_config.strip_accents,

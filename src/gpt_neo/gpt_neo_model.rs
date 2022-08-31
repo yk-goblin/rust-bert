@@ -690,6 +690,7 @@ impl GptNeoGenerator {
             None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
+            None,
             false,
             None,
             None,

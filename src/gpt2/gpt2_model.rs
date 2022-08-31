@@ -715,6 +715,7 @@ impl GPT2Generator {
             None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
+            None,
             false,
             None,
             None,

@@ -55,6 +55,8 @@ pub struct SentenceEmbeddingsConfig {
     pub tokenizer_vocab_resource: Box<dyn ResourceProvider + Send>,
     /// Optional transformer's tokenizer merges resource
     pub tokenizer_merges_resource: Option<Box<dyn ResourceProvider + Send>>,
+    /// Optional transformer's tokenizer secial tokens map resource
+    pub tokenizer_secial_tokens_map_resource: Option<Box<dyn ResourceProvider + Send>>,
     /// Device to place the transformer model on
     pub device: Device,
 }
@@ -94,6 +96,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                     DistilBertVocabResources::DISTILUSE_BASE_MULTILINGUAL_CASED,
                 )),
                 tokenizer_merges_resource: None,
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
 
@@ -124,6 +127,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                     BertVocabResources::BERT_BASE_NLI_MEAN_TOKENS,
                 )),
                 tokenizer_merges_resource: None,
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
 
@@ -154,6 +158,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                     BertVocabResources::ALL_MINI_LM_L12_V2,
                 )),
                 tokenizer_merges_resource: None,
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
 
@@ -186,6 +191,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 tokenizer_merges_resource: Some(Box::new(RemoteResource::from_pretrained(
                     RobertaMergesResources::ALL_DISTILROBERTA_V1,
                 ))),
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
 
@@ -216,6 +222,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                     AlbertVocabResources::PARAPHRASE_ALBERT_SMALL_V2,
                 )),
                 tokenizer_merges_resource: None,
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
 
@@ -250,6 +257,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                     T5VocabResources::SENTENCE_T5_BASE,
                 )),
                 tokenizer_merges_resource: None,
+                tokenizer_secial_tokens_map_resource: None,
                 device: Device::cuda_if_available(),
             },
         }
