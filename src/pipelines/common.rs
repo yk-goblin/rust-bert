@@ -1365,12 +1365,14 @@ impl TokenizerOption {
                     .get(DeBERTaVocab::pad_value())
                     .expect("PAD token not found in vocabulary"),
             ),
-            Self::DebertaV2(ref tokenizer) => Some(
-                *MultiThreadedTokenizer::vocab(tokenizer)
+            Self::DebertaV2(ref tokenizer) => Some({
+                let vocab = MultiThreadedTokenizer::vocab(tokenizer);
+
+                *vocab
                     .special_values
-                    .get(DeBERTaV2Vocab::pad_value())
-                    .expect("PAD token not found in vocabulary"),
-            ),
+                    .get(&vocab.special_tokens_map.pad_token)
+                    .expect("PAD token not found in vocabulary")
+            }),
             Self::Roberta(ref tokenizer) => Some(
                 *MultiThreadedTokenizer::vocab(tokenizer)
                     .special_values
@@ -1464,12 +1466,14 @@ impl TokenizerOption {
                     .get(DeBERTaVocab::sep_value())
                     .expect("SEP token not found in vocabulary"),
             ),
-            Self::DebertaV2(ref tokenizer) => Some(
-                *MultiThreadedTokenizer::vocab(tokenizer)
+            Self::DebertaV2(ref tokenizer) => Some({
+                let vocab = MultiThreadedTokenizer::vocab(tokenizer);
+
+                *vocab
                     .special_values
-                    .get(DeBERTaV2Vocab::sep_value())
-                    .expect("SEP token not found in vocabulary"),
-            ),
+                    .get(&vocab.special_tokens_map.sep_token)
+                    .expect("SEP token not found in vocabulary")
+            }),
             Self::Roberta(ref tokenizer) => Some(
                 *MultiThreadedTokenizer::vocab(tokenizer)
                     .special_values
@@ -1548,12 +1552,14 @@ impl TokenizerOption {
                     .get(RobertaVocab::bos_value())
                     .unwrap_or(&0),
             ),
-            Self::DebertaV2(ref tokenizer) => Some(
-                *MultiThreadedTokenizer::vocab(tokenizer)
+            Self::DebertaV2(ref tokenizer) => Some({
+                let vocab = MultiThreadedTokenizer::vocab(tokenizer);
+
+                *vocab
                     .special_values
-                    .get(DeBERTaV2Vocab::bos_value())
-                    .expect("BOS token not found in vocabulary"),
-            ),
+                    .get(&vocab.special_tokens_map.bos_token)
+                    .expect("BOS token not found in vocabulary")
+            }),
             Self::XLMRoberta(ref tokenizer) => Some(
                 *MultiThreadedTokenizer::vocab(tokenizer)
                     .special_values
@@ -1617,12 +1623,14 @@ impl TokenizerOption {
                     .get(RobertaVocab::eos_value())
                     .unwrap_or(&2),
             ),
-            Self::DebertaV2(ref tokenizer) => Some(
-                *MultiThreadedTokenizer::vocab(tokenizer)
+            Self::DebertaV2(ref tokenizer) => Some({
+                let vocab = MultiThreadedTokenizer::vocab(tokenizer);
+
+                *vocab
                     .special_values
-                    .get(DeBERTaV2Vocab::eos_value())
-                    .expect("EOS token not found in vocabulary"),
-            ),
+                    .get(&vocab.special_tokens_map.eos_token)
+                    .expect("EOS token not found in vocabulary")
+            }),
             Self::XLMRoberta(ref tokenizer) => Some(
                 *MultiThreadedTokenizer::vocab(tokenizer)
                     .special_values
