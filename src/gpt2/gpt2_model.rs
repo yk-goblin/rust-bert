@@ -712,6 +712,7 @@ impl GPT2Generator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::GPT2,
+            None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
             false,

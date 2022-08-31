@@ -944,6 +944,7 @@ impl ProphetNetConditionalGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::ProphetNet,
+            None,
             vocab_path.to_str().unwrap(),
             None,
             true,

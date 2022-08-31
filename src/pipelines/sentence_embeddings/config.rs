@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use tch::Device;
 
-use crate::pipelines::common::ModelType;
+use crate::pipelines::common::{ModelType, TokenizerClass};
 use crate::resources::ResourceProvider;
 use crate::{Config, RustBertError};
 
@@ -47,6 +47,8 @@ pub struct SentenceEmbeddingsConfig {
     pub dense_weights_resource: Option<Box<dyn ResourceProvider + Send>>,
     /// Sentence BERT specific configuration resource
     pub sentence_bert_config_resource: Box<dyn ResourceProvider + Send>,
+    /// Transformer class name
+    pub tokenizer_class: Option<TokenizerClass>,
     /// Transformer's tokenizer configuration resource
     pub tokenizer_config_resource: Box<dyn ResourceProvider + Send>,
     /// Transformer's tokenizer vocab resource
@@ -84,6 +86,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::DISTILUSE_BASE_MULTILINGUAL_CASED,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::DISTILUSE_BASE_MULTILINGUAL_CASED,
                 )),
@@ -113,6 +116,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::BERT_BASE_NLI_MEAN_TOKENS,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::BERT_BASE_NLI_MEAN_TOKENS,
                 )),
@@ -142,6 +146,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::ALL_MINI_LM_L12_V2,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::ALL_MINI_LM_L12_V2,
                 )),
@@ -171,6 +176,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::ALL_DISTILROBERTA_V1,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::ALL_DISTILROBERTA_V1,
                 )),
@@ -202,6 +208,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::PARAPHRASE_ALBERT_SMALL_V2,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::PARAPHRASE_ALBERT_SMALL_V2,
                 )),
@@ -235,6 +242,7 @@ impl From<SentenceEmbeddingsModelType> for SentenceEmbeddingsConfig {
                 sentence_bert_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsConfigResources::SENTENCE_T5_BASE,
                 )),
+                tokenizer_class: None,
                 tokenizer_config_resource: Box::new(RemoteResource::from_pretrained(
                     SentenceEmbeddingsTokenizerConfigResources::SENTENCE_T5_BASE,
                 )),

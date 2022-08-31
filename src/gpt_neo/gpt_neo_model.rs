@@ -687,6 +687,7 @@ impl GptNeoGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::GPTNeo,
+            None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
             false,

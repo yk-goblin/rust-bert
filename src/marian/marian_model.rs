@@ -841,6 +841,7 @@ impl MarianGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::Marian,
+            None,
             vocab_path.to_str().unwrap(),
             Some(sentence_piece_path.to_str().unwrap()),
             false,

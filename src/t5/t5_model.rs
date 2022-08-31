@@ -859,6 +859,7 @@ impl T5Generator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::T5,
+            None,
             vocab_path.to_str().unwrap(),
             None,
             false,

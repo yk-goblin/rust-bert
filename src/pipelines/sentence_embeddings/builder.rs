@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use serde::Deserialize;
 use tch::Device;
 
-use crate::pipelines::common::ModelType;
+use crate::pipelines::common::{ModelType, TokenizerClass};
 use crate::pipelines::sentence_embeddings::{
     SentenceEmbeddingsConfig, SentenceEmbeddingsModel, SentenceEmbeddingsModulesConfig,
 };
@@ -38,6 +38,7 @@ pub struct Local {
 #[derive(Debug, Deserialize)]
 struct ModelConfig {
     model_type: ModelType,
+    tokenizer_class: Option<TokenizerClass>,
 }
 
 impl Config for ModelConfig {}
@@ -59,7 +60,10 @@ impl SentenceEmbeddingsBuilder<Local> {
         let modules = SentenceEmbeddingsModulesConfig::from_file(&modules_config).validate()?;
 
         let transformer_config = model_dir.join("config.json");
-        let transformer_type = ModelConfig::from_file(&transformer_config).model_type;
+        let ModelConfig {
+            model_type: transformer_type,
+            tokenizer_class,
+        } = ModelConfig::from_file(&transformer_config);
         let transformer_weights = model_dir.join("rust_model.ot");
 
         let pooling_config = model_dir
@@ -78,14 +82,17 @@ impl SentenceEmbeddingsBuilder<Local> {
 
         let tokenizer_config = model_dir.join("tokenizer_config.json");
         let sentence_bert_config = model_dir.join("sentence_bert_config.json");
-        let (tokenizer_vocab, tokenizer_merges) = match transformer_type {
-            ModelType::Bert | ModelType::DistilBert => (model_dir.join("vocab.txt"), None),
-            ModelType::Roberta => (
+        let (tokenizer_vocab, tokenizer_merges) = match (tokenizer_class, transformer_type) {
+            (Some(TokenizerClass::DebertaV2Tokenizer), _) => (model_dir.join("spm.model"), None),
+            (None, ModelType::Bert) | (None, ModelType::DistilBert) => {
+                (model_dir.join("vocab.txt"), None)
+            }
+            (None, ModelType::Roberta) => (
                 model_dir.join("vocab.json"),
                 Some(model_dir.join("merges.txt")),
             ),
-            ModelType::Albert => (model_dir.join("spiece.model"), None),
-            ModelType::T5 => (model_dir.join("spiece.model"), None),
+            (None, ModelType::Albert) => (model_dir.join("spiece.model"), None),
+            (None, ModelType::T5) => (model_dir.join("spiece.model"), None),
             _ => {
                 return Err(RustBertError::InvalidConfigurationError(format!(
                     "Unsupported transformer model {:?} for Sentence Embeddings",
@@ -103,6 +110,7 @@ impl SentenceEmbeddingsBuilder<Local> {
             dense_config_resource: dense_config.map(|r| r.into()),
             dense_weights_resource: dense_weights.map(|r| r.into()),
             sentence_bert_config_resource: sentence_bert_config.into(),
+            tokenizer_class,
             tokenizer_config_resource: tokenizer_config.into(),
             tokenizer_vocab_resource: tokenizer_vocab.into(),
             tokenizer_merges_resource: tokenizer_merges.map(|r| r.into()),

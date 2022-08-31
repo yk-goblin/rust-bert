@@ -180,6 +180,7 @@ impl SentenceEmbeddingsModel {
         let SentenceEmbeddingsConfig {
             modules_config_resource,
             sentence_bert_config_resource,
+            tokenizer_class,
             tokenizer_config_resource,
             tokenizer_vocab_resource,
             tokenizer_merges_resource,
@@ -206,6 +207,7 @@ impl SentenceEmbeddingsModel {
         );
         let tokenizer = TokenizerOption::from_file(
             transformer_type,
+            tokenizer_class,
             tokenizer_vocab_resource
                 .get_local_path()?
                 .to_string_lossy()

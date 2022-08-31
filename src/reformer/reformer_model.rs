@@ -1070,6 +1070,7 @@ impl ReformerGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::Reformer,
+            None,
             vocab_path.to_str().unwrap(),
             None,
             false,

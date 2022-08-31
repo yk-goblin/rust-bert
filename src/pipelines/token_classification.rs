@@ -684,6 +684,7 @@ impl TokenClassificationModel {
 
         let tokenizer = TokenizerOption::from_file(
             config.model_type,
+            None,
             vocab_path.to_str().unwrap(),
             merges_path.as_deref().map(|path| path.to_str().unwrap()),
             config.lower_case,

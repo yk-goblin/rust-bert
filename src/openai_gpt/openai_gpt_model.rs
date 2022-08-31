@@ -474,6 +474,7 @@ impl OpenAIGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::OpenAiGpt,
+            None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
             true,

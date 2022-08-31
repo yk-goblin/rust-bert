@@ -878,6 +878,7 @@ impl MBartGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::MBart,
+            None,
             vocab_path.to_str().unwrap(),
             None,
             false,

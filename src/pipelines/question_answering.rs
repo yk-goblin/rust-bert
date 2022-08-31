@@ -594,6 +594,7 @@ impl QuestionAnsweringModel {
 
         let tokenizer = TokenizerOption::from_file(
             question_answering_config.model_type,
+            None,
             vocab_path.to_str().unwrap(),
             merges_path.as_deref().map(|path| path.to_str().unwrap()),
             question_answering_config.lower_case,

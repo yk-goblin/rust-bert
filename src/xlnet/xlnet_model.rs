@@ -1627,6 +1627,7 @@ impl XLNetGenerator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::XLNet,
+            None,
             vocab_path.to_str().unwrap(),
             None,
             false,

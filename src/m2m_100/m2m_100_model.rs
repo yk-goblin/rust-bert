@@ -621,6 +621,7 @@ impl M2M100Generator {
 
         let tokenizer = TokenizerOption::from_file(
             ModelType::M2M100,
+            None,
             vocab_path.to_str().unwrap(),
             Some(merges_path.to_str().unwrap()),
             false,

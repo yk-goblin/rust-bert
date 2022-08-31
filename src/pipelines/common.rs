@@ -90,6 +90,11 @@ pub enum ModelType {
     FNet,
 }
 
+#[derive(Debug, Clone, Copy, Deserialize)]
+pub enum TokenizerClass {
+    DebertaV2Tokenizer,
+}
+
 /// # Abstraction that holds a model configuration, can be of any of the supported models
 pub enum ConfigOption {
     /// Bart configuration
@@ -375,6 +380,7 @@ impl TokenizerOption {
     /// Interface method to load a tokenizer from file
     pub fn from_file(
         model_type: ModelType,
+        tokenizer_class: Option<TokenizerClass>,
         vocab_path: &str,
         merges_path: Option<&str>,
         lower_case: bool,
@@ -383,6 +389,18 @@ impl TokenizerOption {
     ) -> Result<Self, RustBertError> {
         let strip_accents = strip_accents.into();
         let add_prefix_space = add_prefix_space.into();
+
+        match tokenizer_class {
+            Some(TokenizerClass::DebertaV2Tokenizer) => {
+                return Ok(TokenizerOption::DebertaV2(DeBERTaV2Tokenizer::from_file(
+                    vocab_path,
+                    lower_case,
+                    strip_accents.unwrap_or(false),
+                    add_prefix_space.unwrap_or(false),
+                )?))
+            }
+            None => {}
+        }
 
         let tokenizer = match model_type {
             ModelType::Bert
